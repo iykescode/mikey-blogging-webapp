@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- header-scripts -->
+  <div th:replace="~{includes/header-scripts :: div}"></div>
+  <!-- header-scripts end -->
+</head>
+<body>
+
+<!-- Header Start -->
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<!-- Header Close -->
+
+<div class="main-wrapper ">
+  <section class="page-title bg-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white">Our blog</span>
+            <h1 class="text-capitalize mb-4 text-lg">Blog articles</h1>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+              <li class="list-inline-item"><span class="text-white">/</span></li>
+              <li class="list-inline-item"><a href="#" class="text-white-50">Our blog</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section blog-wrap bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="row">
+
+            <div class="col-lg-6 col-md-6 mb-5" th:each="post: ${posts}">
+              <div class="blog-item">
+                <img th:each="img: ${post.getPostImage()}" th:src="${imagePath + img.image}" alt="" class="img-fluid rounded image-with-sidebar">
+
+                <div class="blog-item-content bg-white p-4">
+                  <div class="blog-item-meta  py-1 px-2">
+                    <span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i><span th:text="${post.getCategory().getName()}"></span></span>
+                  </div>
+
+                  <h3 class="mt-3 mb-3"><a th:href="@{/blog/view/{slug}(slug=${post.slug})}" th:text="${post.title}"></a></h3>
+
+<!--                  TODO-->
+                  <p class="mb-4 text-sm" th:if="${#strings.length(post.content) > 110}" th:utext="${#strings.substring(post.content, 0, 110) + '...'}"></p>
+                  <p class="mb-4 text-sm" th:if="${#strings.length(post.content) < 110}" th:utext="${post.content}"></p>
+
+                  <a th:href="@{/blog/view/{slug}(slug=${post.slug})}" class="btn btn-small btn-main btn-round-full">Learn More</a>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar-wrap">
+            <div class="sidebar-widget search card p-4 mb-3 border-0">
+              <form th:action="@{/blog/search}" th:method="post">
+                <input type="text" name="keyword" id="keyword" class="form-control" placeholder="search">
+                <button type="submit" class="btn btn-mian btn-small d-block mt-2">search</button>
+              </form>
+            </div>
+
+            <div class="sidebar-widget card border-0 mb-3" th:if="${person != null}">
+              <img th:if="${person.getPersonImage() == null}" src="/frontend/images/blog/blog-author.jpg" alt="" class="img-fluid">
+              <img th:if="${person.getPersonImage() != null}" th:src="${personImagePath + person.getPersonImage().image}" alt="" class="img-fluid">
+              <div class="card-body p-4 text-center">
+                <h5 class="mb-0 mt-4"
+                    th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.StringUtil).spaceTwoStrings(person.getFirstName(), person.getLastName())}"></h5>
+                <p th:text="${person.getPersonProfile().headline}"></p>
+                <p th:text="${person.getPersonProfile().summary}"></p>
+
+                <ul class="list-inline author-socials">
+                  <li th:if="${person.getPersonProfile().facebook != '' && person.getPersonProfile().facebook != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${person.getPersonProfile().facebook}"><i class="fab fa-facebook-f text-muted"></i></a>
+                  </li>
+                  <li th:if="${person.getPersonProfile().twitter != '' && person.getPersonProfile().twitter != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${person.getPersonProfile().twitter}"><i class="fab fa-twitter text-muted"></i></a>
+                  </li>
+                  <li th:if="${person.getPersonProfile().instagram != '' && person.getPersonProfile().instagram != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${person.getPersonProfile().instagram}"><i class="fab fa-instagram text-muted"></i></a>
+                  </li>
+                  <li th:if="${person.getPersonProfile().linkedIn != '' && person.getPersonProfile().linkedIn != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${person.getPersonProfile().linkedIn}"><i class="fab fa-linkedin-in text-muted"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="sidebar-widget latest-post card border-0 p-4 mb-3">
+              <h5>Latest Posts</h5>
+
+              <div class="media border-bottom py-3" th:each="latPosts: ${latestPosts}">
+                <a href="#"><img class="mr-4 latest-posts-image" th:src="${imagePath + latPosts.getPostImage().image}" alt=""></a>
+                <div class="media-body">
+                  <h6 class="my-2"><a href="#" th:text="${latPosts.title}"></a></h6>
+                  <span class="text-sm text-muted" th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(latPosts.createdAt)}"></span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="sidebar-widget bg-white rounded tags p-4 mb-3">
+              <h5 class="mb-4">Tags</h5>
+
+              <a href="#">Web</a>
+              <a href="#">agency</a>
+              <a href="#">company</a>
+              <a href="#">creative</a>
+              <a href="#">html</a>
+              <a href="#">Marketing</a>
+              <a href="#">Social Media</a>
+              <a href="#">Branding</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--      TODO-->
+      <div class="row mt-5">
+        <div class="col-lg-8">
+          <nav class="navigation pagination py-2 d-inline-block">
+            <div class="nav-links">
+              <a class="prev page-numbers"
+                 th:if="${currentPage > 1}"
+                 th:href="@{${servletPath}+'?pageNo='+${currentPage - 1}+'&pageSize='+${pageSize}+'&sortBy='+${sortBy}}">Prev</a>
+<!--              <span aria-current="page" class="page-numbers current" th:text="${currentPage}"></span>-->
+              <th:block th:each="pageNumber : ${#numbers.sequence(currentPage, totalPages)}">
+                <a class="page-numbers" th:href="@{${servletPath}+'?pageNo='+${pageNumber}+'&pageSize='+${pageSize}+'&sortBy='+${sortBy}}"
+                   th:text="${pageNumber}"></a>
+              </th:block>
+              <a class="next page-numbers" th:href="@{${servletPath}+'?pageNo='+${currentPage + 1}+'&pageSize='+${pageSize}+'&sortBy='+${sortBy}}"
+                 th:if="${currentPage < totalPages}">Next</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer start -->
+  <div th:replace="~{includes/footer :: footer}"></div>
+  <!-- footer end -->
+
+</div>
+
+<!-- footer-scripts start -->
+<div th:replace="~{includes/footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+
+</body>
+</html>

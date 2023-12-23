@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- header-scripts -->
+    <div th:replace="~{includes/admin-header :: div}"></div>
+    <!-- header-scripts end -->
+</head>
+<body class="sb-nav-fixed">
+<!-- nav -->
+<div th:replace="~{includes/admin-nav :: nav}"></div>
+<!-- nav end -->
+<div id="layoutSidenav">
+    <!-- side-nav -->
+    <div th:replace="~{includes/admin-side-nav :: div}"></div>
+    <!-- side-nav end -->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Posts</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/user/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Posts</li>
+                </ol>
+                <div th:if="${message != null}" class="card mb-4">
+                    <div class="card-body">
+                        <li th:class="${'alert alert-'+alertColor}" role="alert"
+                            th:if="${!#strings.isEmpty(message)}"
+                            th:text="${message}" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-users me-1"></i>
+                        Posts
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Status Message</th>
+                                    <th>Status Message Details</th>
+                                    <th>Created At</th>
+                                    <th>Created By</th>
+                                    <th>View</th>
+                                    <th sec:authorize="hasRole('ROLE_ADMIN')">Disapprove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="post, iter: ${posts}" th:if="${person.id == post.getPerson().id || person.getRole().roleName == 'ROLE_ADMIN'}">
+                                    <td th:text="${iter.index+1}"></td>
+                                    <td th:text="${post.title}"></td>
+                                    <td th:text="${post.status}"></td>
+                                    <td th:text="${post.statusMessage}"></td>
+                                    <td th:text="${post.statusMessageDetails}"></td>
+                                    <td th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(post.createdAt)}"></td>
+                                    <td th:text="${post.createdBy}"></td>
+                                    <td>
+                                        <a class="btn btn-dark text-white" data-toggle="modal" th:attr="data-target='#'+${post.id}">View</a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" th:attr="id=${post.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel" th:text="${'View Post: ' + post.title}"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+<!--                                                        <img src="/frontend/images/blog/2.jpg" alt="" class="img-fluid rounded">-->
+                                                        <img th:each="img: ${post.getPostImage()}" th:src="${imagePath + img.image}" alt="" class="img-fluid rounded">
+                                                        <p th:utext="${post.content}"></p>
+                                                        <p><span class="fw-bold">Quote: </span><span th:text="${post.quote}"></span></p>
+                                                        <p>
+                                                            <span class="fw-bold">Created At: </span>
+                                                            <span th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(post.createdAt)}"></span>
+                                                            <span>by: </span>
+                                                            <span><a target="_blank" href="" th:text="${post.createdBy}"></a></span>
+                                                        </p>
+                                                        <hr>
+                                                        <p><span class="fw-bold">Category: </span><span th:text="${post.getCategory().getName()}"></span></p>
+                                                        <hr>
+                                                        <p><span class="fw-bold">Tags: </span><span th:text="${post.tags}"></span></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <a th:href="@{/user/posts/upload-image/{slug}(slug=${post.slug})}" class="btn btn-primary">Upload Image</a>
+                                                        <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/user/posts/approve/{id}(id=${post.id})}" th:method="patch">
+                                                            <button type="submit" class="btn btn-success">Approve</button>
+                                                        </form>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <a class="btn btn-danger text-white" data-toggle="modal" th:attr="data-target='#'+${'d'+post.id}">Disapprove</a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" th:attr="id=${'d'+post.id}" tabindex="-1" role="dialog" aria-labelledby="disapproveModal" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="disapproveModal" th:text="${'Disapprove Post: ' + post.title}"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Please give a very descriptive reason as to why you're disapproving this post for the author to understand when making edits to meet the requirements.</p>
+                                                        <form th:action="@{/user/posts/disapprove/{id}(id=${post.id})}" th:method="patch" th:object="${post}">
+                                                            <div class="form-floating mb-3">
+                                                                <textarea th:field="*{statusMessageDetails}" th:errorclass="border-danger"
+                                                                          class="form-control" id="inputStatusMessageDetails" placeholder="Input your reasons for disapproving this post"></textarea>
+                                                                <label for="inputStatusMessageDetails">Message Details <span class="text-danger">*</span></label>
+                                                                <ul>
+                                                                    <li class="text-danger" role="alert" th:each="error : ${#fields.errors('statusMessageDetails')}" th:text="${error}" />
+                                                                </ul>
+                                                            </div>
+                                                            <div class="mt-4 mb-0">
+                                                                <div class="d-grid"><button type="submit" class="btn btn-danger btn-block">Disapprove</button></div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- footer -->
+        <div th:replace="~{includes/admin-footer :: footer}"></div>
+        <!-- footer end -->
+    </div>
+</div>
+<!-- footer-scripts -->
+<div th:replace="~{includes/admin-footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+</body>
+</html>

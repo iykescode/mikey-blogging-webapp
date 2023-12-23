@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- header-scripts -->
+    <div th:replace="~{includes/admin-header :: div}"></div>
+    <!-- header-scripts end -->
+</head>
+<body class="sb-nav-fixed">
+<!-- nav -->
+<div th:replace="~{includes/admin-nav :: nav}"></div>
+<!-- nav end -->
+<div id="layoutSidenav">
+    <!-- side-nav -->
+    <div th:replace="~{includes/admin-side-nav :: div}"></div>
+    <!-- side-nav end -->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Users</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/user/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Users</li>
+                </ol>
+                <div th:if="${message != null}" class="card mb-4">
+                    <div class="card-body">
+                        <li th:class="${'alert alert-'+alertColor}" role="alert"
+                            th:if="${!#strings.isEmpty(message)}"
+                            th:text="${message}" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-users me-1"></i>
+                        Users
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Created At</th>
+                                    <th>Created By</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="person: ${users}">
+                                    <td th:text="${person.id}"></td>
+                                    <td th:text="${person.firstName}"></td>
+                                    <td th:text="${person.lastName}"></td>
+                                    <td th:text="${person.email}"></td>
+                                    <td th:text="${person.username}"></td>
+                                    <td th:text="${person.getRole().getRoleName()}"></td>
+                                    <td th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(person.createdAt)}"></td>
+                                    <td th:text="${person.createdBy}"></td>
+                                    <td><a th:href="@{/user/users/edit/{id}(id=${person.id})}" class="btn btn-primary text-white">Edit</a></td>
+                                    <td>
+                                        <a class="btn btn-danger text-white" data-toggle="modal" th:attr="data-target='#'+${person.id}">Delete</a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" th:attr="id=${person.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel" th:text="${'Delete User: ' + person.username + ' ?'}"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this user? This action cannot be undone.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <form th:action="@{/user/users/delete/{id}(id=${person.id})}" th:method="delete">
+                                                            <button type="submit" class="btn btn-danger">Yes, I'm sure</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- footer -->
+        <div th:replace="~{includes/admin-footer :: footer}"></div>
+        <!-- footer end -->
+    </div>
+</div>
+<!-- footer-scripts -->
+<div th:replace="~{includes/admin-footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+</body>
+</html>

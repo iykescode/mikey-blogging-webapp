@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Core</div>
+                <a th:classappend="${servletPath == '/user/' ? 'active':''}"
+                        class="nav-link" th:href="@{/user/}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Dashboard
+                </a>
+                <div class="sb-sidenav-menu-heading">Interface</div>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#strings.startsWith(servletPath, '/user/users') ? 'active' : ''}" class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Users
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a th:classappend="${servletPath == '/user/users' ? 'active':''}" class="nav-link" th:href="@{/user/users}">View all users</a>
+                        <a th:classappend="${servletPath == '/user/users/create' ? 'active':''}" class="nav-link" th:href="@{/user/users/create}">Create a new user</a>
+                    </nav>
+                </div>
+
+                <a th:classappend="${#strings.startsWith(servletPath, '/user/posts') ? 'active' : ''}" class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                    Posts
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a th:classappend="${servletPath == '/user/posts' ? 'active':''}" th:href="@{/user/posts}" class="nav-link">View all posts</a>
+                        <a class="nav-link" th:classappend="${servletPath == '/user/posts/pending' ? 'active':''}" th:href="@{/user/posts/pending}">Pending posts</a>
+                        <a class="nav-link" th:classappend="${servletPath == '/user/posts/drafts' ? 'active':''}" th:href="@{/user/posts/drafts}">Draft posts</a>
+                        <a th:classappend="${servletPath == '/user/posts/create' ? 'active':''}" th:href="@{/user/posts/create}" class="nav-link">Create a new post</a>
+                    </nav>
+                </div>
+
+                <a th:classappend="${#strings.startsWith(servletPath, '/user/categories') ? 'active' : ''}" class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
+                    Categories
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a th:classappend="${servletPath == '/user/categories' ? 'active':''}" th:href="@{/user/categories}" class="nav-link">View all categories</a>
+                        <a th:classappend="${servletPath == '/user/categories/create' ? 'active':''}" th:href="@{/user/categories/create}" class="nav-link">Create a new category</a>
+                    </nav>
+                </div>
+
+                <a th:classappend="${#strings.startsWith(servletPath, '/user/comments') ? 'active' : ''}" class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts5" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                    Comments
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts5" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a th:classappend="${servletPath == '/user/comments' ? 'active':''}" th:href="@{/user/comments}" class="nav-link">View all comments</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            <span sec:authentication="name"></span>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

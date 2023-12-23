@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- header-scripts -->
+    <div th:replace="~{includes/admin-header :: div}"></div>
+    <!-- header-scripts end -->
+
+    <!-- TinyMCE Library -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/ozj2ier3ax23yv74mu53hlqhucl1alc9n3hgue41rcczxc3w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Chosen Select Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+</head>
+<body class="sb-nav-fixed">
+<!-- nav -->
+<div th:replace="~{includes/admin-nav :: nav}"></div>
+<!-- nav end -->
+<div id="layoutSidenav">
+    <!-- side-nav -->
+    <div th:replace="~{includes/admin-side-nav :: div}"></div>
+    <!-- side-nav end -->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Posts</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/user/}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/user/posts}">Posts</a></li>
+                    <li class="breadcrumb-item active">Create a new post</li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-users me-1"></i>
+                        Posts / Edit
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${category.id == null}">
+                            <form th:action="@{/user/categories/create}" th:method="post" th:object="${category}">
+                                <div class="form-floating mb-3">
+                                    <input th:field="*{name}" th:errorclass="border-danger"
+                                           class="form-control" id="inputName" type="text" placeholder="This is a category name" />
+                                    <label for="inputName">Name <span class="text-danger">*</span></label>
+                                    <ul>
+                                        <li class="text-danger" role="alert" th:each="error : ${#fields.errors('name')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                                <div class="mt-4 mb-0">
+                                    <div class="d-grid"><button type="submit" class="btn btn-dark btn-block">Create Category</button></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div th:if="${category.id != null}">
+                            <form th:action="@{/user/categories/update/{id}(id=${category.id})}" th:method="put" th:object="${category}">
+                                <div class="form-floating mb-3">
+                                    <input th:field="*{name}" th:errorclass="border-danger"
+                                           class="form-control" id="editName" type="text" placeholder="This is a category name" />
+                                    <label for="editName">Name <span class="text-danger">*</span></label>
+                                    <ul>
+                                        <li class="text-danger" role="alert" th:each="error : ${#fields.errors('name')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                                <div class="mt-4 mb-0">
+                                    <div class="d-grid"><button type="submit" class="btn btn-dark btn-block">Update Category</button></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- footer -->
+        <div th:replace="~{includes/admin-footer :: footer}"></div>
+        <!-- footer end -->
+    </div>
+</div>
+<!-- footer-scripts -->
+<div th:replace="~{includes/admin-footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+
+<script>
+    $(".chosen-select").chosen({
+        no_results_text: "No fields match for"
+    })
+
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+</script>
+</body>
+</html>

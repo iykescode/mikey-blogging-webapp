@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- header-scripts -->
+    <div th:replace="~{includes/admin-header :: div}"></div>
+    <!-- header-scripts end -->
+
+    <!-- TinyMCE Library -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/ozj2ier3ax23yv74mu53hlqhucl1alc9n3hgue41rcczxc3w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Chosen Select Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+</head>
+<body class="sb-nav-fixed">
+<!-- nav -->
+<div th:replace="~{includes/admin-nav :: nav}"></div>
+<!-- nav end -->
+<div id="layoutSidenav">
+    <!-- side-nav -->
+    <div th:replace="~{includes/admin-side-nav :: div}"></div>
+    <!-- side-nav end -->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Posts</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/user/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ol>
+                <div th:if="${message != null}" class="card mb-4">
+                    <div class="card-body">
+                        <li th:class="${'alert alert-'+alertColor}" role="alert"
+                            th:if="${!#strings.isEmpty(message)}"
+                            th:text="${message}" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-users me-1"></i>
+                        User Profile
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- User Image -->
+                                <img th:each="img: ${person.getPersonImage()}" th:src="${imagePath + img.image}" alt="User Image" class="img-fluid user-profile-image">
+                            </div>
+                            <div class="col-md-8">
+                                <!-- User Name -->
+                                <h2 th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.StringUtil).spaceTwoStrings(person.firstName, person.lastName)}"></h2>
+                                <!-- User Headline -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='headline')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    Headline
+                                                </div>
+                                            </div>
+                                            <textarea cols="5" rows="2" th:field="*{headline}" type="text" class="form-control" placeholder="Headline"></textarea>
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('headline')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- User Summary -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='summary')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    Summary
+                                                </div>
+                                            </div>
+                                            <textarea cols="5" rows="2" th:field="*{summary}" type="text" class="form-control" placeholder="Summary"></textarea>
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('summary')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+
+                                <!-- Facebook -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='facebook')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa-brands fa-facebook"></i>
+                                                </div>
+                                            </div>
+                                            <input th:field="*{facebook}" type="text" class="form-control" placeholder="Facebook">
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('facebook')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+
+                                <!-- Twitter -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='twitter')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa-brands fa-twitter"></i>
+                                                </div>
+                                            </div>
+                                            <input th:field="*{twitter}" type="text" class="form-control" placeholder="Twitter">
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('twitter')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+
+                                <!-- Instagram -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='instagram')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa-brands fa-instagram"></i>
+                                                </div>
+                                            </div>
+                                            <input th:field="*{instagram}" type="text" class="form-control" placeholder="Instagram">
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('instagram')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+
+                                <!-- Linkedin -->
+                                <div class="col-6">
+                                    <form th:action="@{/user/profile/update/{social}(social='linkedIn')}" th:method="post" th:object="${profile}">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa-brands fa-linkedin"></i>
+                                                </div>
+                                            </div>
+                                            <input th:field="*{linkedIn}" type="text" class="form-control" placeholder="Linkedin">
+                                            <button type="submit" class="btn btn-dark">Update</button>
+                                        </div>
+                                        <ul>
+                                            <li class="text-danger" role="alert" th:each="error : ${#fields.errors('linkedIn')}" th:text="${error}" />
+                                        </ul>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a th:href="@{/user/users/edit/{id}(id=${person.id})}" class="btn btn-dark">Edit account</a>
+                        <a th:if="${personImageCheck == 'true'}" th:href="@{/user/profile/update-image}" class="btn btn-dark">Edit image</a>
+                        <a th:if="${personImageCheck == 'false'}" th:href="@{/user/profile/upload-image}" class="btn btn-dark">Upload image</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- footer -->
+        <div th:replace="~{includes/admin-footer :: footer}"></div>
+        <!-- footer end -->
+    </div>
+</div>
+<!-- footer-scripts -->
+<div th:replace="~{includes/admin-footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+
+<script>
+    $(".chosen-select").chosen({
+        no_results_text: "No fields match for"
+    })
+
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+</script>
+</body>
+</html>

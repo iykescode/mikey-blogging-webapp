@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- header-scripts -->
+  <div th:replace="~{includes/header-scripts :: div}"></div>
+  <!-- header-scripts end -->
+</head>
+
+<body>
+
+<!-- Header Start -->
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<!-- Header Close -->
+
+<div class="main-wrapper ">
+  <section class="page-title bg-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white">News details</span>
+            <h1 class="text-capitalize mb-4 text-lg">Blog Single</h1>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+              <li class="list-inline-item"><span class="text-white">/</span></li>
+              <li class="list-inline-item"><a href="#" class="text-white-50">News details</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="section blog-wrap bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="row">
+            <div class="col-lg-12 mb-5">
+              <div class="single-blog-item">
+                <img th:each="img: ${post.getPostImage()}" th:src="${imagePath + img.image}" alt="" class="img-fluid rounded image-single">
+
+                <div class="blog-item-content bg-white p-5">
+                  <div class="blog-item-meta bg-gray py-1 px-2">
+                    <span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i><span th:text="${post.getCategory().getName()}"></span></span>
+                    <span th:if="${postViews > 1}" class="text-muted text-capitalize mr-3">
+                      <i class="ti-eye mr-2"></i>
+                      <span th:text="${postViews + ' Views'}"></span>
+                    </span>
+                    <span th:if="${postViews < 2}" class="text-muted text-capitalize mr-3">
+                      <i class="ti-eye mr-2"></i>
+                      <span th:text="${postViews + ' View'}"></span>
+                    </span>
+                    <span th:if="${commentsCount < 2}" class="text-muted text-capitalize mr-3">
+                      <i class="ti-comment mr-2"></i>
+                      <span th:text="${commentsCount + ' Comment'}"></span>
+                    </span>
+                    <span th:if="${commentsCount > 1}" class="text-muted text-capitalize mr-3">
+                      <i class="ti-comment mr-2"></i>
+                      <span th:text="${commentsCount + ' Comments'}"></span>
+                    </span>
+                    <span class="text-black text-capitalize mr-3"><i class="ti-time mr-1"></i> <span th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(post.createdAt)}"></span></span>
+                  </div>
+
+                  <h2 class="mt-3 mb-4"><a th:href="@{/blog/view/{slug}(slug=${post.slug})}" th:text="${post.title}"></a></h2>
+                  <p th:utext="${post.content}"></p>
+
+                  <h3 class="quote" th:if="${!#strings.isEmpty(post.quote)}" th:text="${post.quote}"></h3>
+
+                  <div class="tag-option mt-5 clearfix">
+                    <ul class="float-left list-inline">
+                      <li>Tags:</li>
+                      <li class="list-inline-item" th:each="tag: ${postTags}">
+                        <a href="#" rel="tag" th:text="${tag}"></a>
+                      </li>
+                    </ul>
+
+                    <ul class="float-right list-inline">
+                      <li class="list-inline-item"> Share: </li>
+                      <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                      <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                      <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
+                      <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-lg-12 mb-5">
+              <div class="posts-nav bg-white p-5 d-lg-flex d-md-flex justify-content-between ">
+                <a class="post-prev align-items-center" th:href="@{/blog/view/{slug}(slug=${previousPost.slug})}" th:if="${previousPost != null}">
+                  <div class="posts-prev-item mb-4 mb-lg-0">
+                    <span class="nav-posts-desc text-color">- Previous Post</span>
+                    <h6 class="nav-posts-title mt-1" th:text="${previousPost.title}"></h6>
+                  </div>
+                </a>
+                <div class="border"></div>
+                <a class="posts-next" th:href="@{/blog/view/{slug}(slug=${nextPost.slug})}" th:if="${nextPost != null}">
+                  <div class="posts-next-item pt-4 pt-lg-0">
+                    <span class="nav-posts-desc text-lg-right text-md-right text-color d-block">- Next Post</span>
+                    <h6 class="nav-posts-title mt-1" th:text="${nextPost.title}"></h6>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-12 mb-5">
+              <div class="comment-area card border-0 p-5">
+                <h4 class="mb-4" th:if="${commentsCount < 2}" th:text="${commentsCount + ' Comment'}"></h4>
+                <h4 class="mb-4" th:if="${commentsCount > 1}" th:text="${commentsCount + ' Comments'}"></h4>
+                <ul class="comment-tree list-unstyled">
+                  <li class="mb-5" th:each="personComment: ${comments}">
+                    <div class="comment-area-box">
+                      <img alt="" th:if="${personComment.getPerson().getPersonImage() != null}" th:src="${personImagePath + personComment.getPerson().getPersonImage().image}" class="img-fluid float-left mr-3 mt-2 comment-image">
+                      <img alt="" th:if="${personComment.getPerson().getPersonImage() == null}" src="/frontend/images/user/default-user-image.jpeg" class="img-fluid float-left mr-3 mt-2 comment-image">
+
+                      <h5 class="mb-1" th:text="${personComment.getPerson().username}"></h5>
+                      <span>United Kingdom</span>
+
+                      <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
+                        <a th:if="${loggedInUser.id != personComment.getPerson().id}" th:data-user="${personComment.getPerson().username}" href="#" onclick="replyTo(this.getAttribute('data-user'))"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>
+                        <span class="date-comm" th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(personComment.createdAt)}"></span>
+                      </div>
+
+                      <div class="comment-content mt-3">
+                        <p th:text="${personComment.content}"></p>
+                        <form th:action="@{/blog/{slug}/delete-comment/{id}(id=${personComment.id}, slug=${post.slug})}" th:method="delete" th:if="${loggedInUser.id == personComment.getPerson().id}">
+                          <input type="hidden" th:name="comment" th:value="${personComment.id}">
+                          <button type="submit" class="btn btn-outline-danger border-0">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <form th:action="@{/blog/add-comment/{slug}(slug=${post.slug})}" th:method="post" th:object="${comment}" class="contact-form bg-white rounded p-5" id="comment-form">
+                <h4 class="mb-4">Write a comment</h4>
+                <textarea class="form-control mb-3" th:field="*{content}" th:errorclass="border-danger"  name="content" id="content" cols="30" rows="5" placeholder="Comment"></textarea>
+                <ul>
+                  <li class="text-danger" role="alert" th:each="error : ${#fields.errors('content')}" th:text="${error}" />
+                </ul>
+                <input class="btn btn-main btn-round-full" type="submit" name="submit-contact" id="submit_contact" value="Submit Message">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar-wrap">
+            <div class="sidebar-widget search card p-4 mb-3 border-0">
+              <form th:action="@{/blog/search}" th:method="post">
+                <input type="text" name="keyword" id="keyword" class="form-control" placeholder="search">
+                <button type="submit" class="btn btn-mian btn-small d-block mt-2">search</button>
+              </form>
+            </div>
+
+            <div class="sidebar-widget card border-0 mb-3">
+              <img th:if="${post.getPerson().getPersonImage() == null}" src="/frontend/images/blog/blog-author.jpg" alt="" class="img-fluid">
+              <img th:if="${post.getPerson().getPersonImage() != null}" th:src="${personImagePath + post.getPerson().getPersonImage().image}" alt="" class="img-fluid">
+              <div class="card-body p-4 text-center">
+                <h5 class="mb-0 mt-4"
+                    th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.StringUtil).spaceTwoStrings(post.getPerson().getFirstName(), post.getPerson().getLastName())}"></h5>
+                <p th:text="${post.getPerson().getPersonProfile().headline}"></p>
+                <p th:text="${post.getPerson().getPersonProfile().summary}"></p>
+
+                <ul class="list-inline author-socials">
+                  <li th:if="${post.getPerson().getPersonProfile().facebook != '' && post.getPerson().getPersonProfile().facebook != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${post.getPerson().getPersonProfile().facebook}"><i class="fab fa-facebook-f text-muted"></i></a>
+                  </li>
+                  <li th:if="${post.getPerson().getPersonProfile().twitter != '' && post.getPerson().getPersonProfile().twitter != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${post.getPerson().getPersonProfile().twitter}"><i class="fab fa-twitter text-muted"></i></a>
+                  </li>
+                  <li th:if="${post.getPerson().getPersonProfile().instagram != '' && post.getPerson().getPersonProfile().instagram != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${post.getPerson().getPersonProfile().instagram}"><i class="fab fa-instagram text-muted"></i></a>
+                  </li>
+                  <li th:if="${post.getPerson().getPersonProfile().linkedIn != '' && post.getPerson().getPersonProfile().linkedIn != null}" class="list-inline-item mr-3">
+                    <a target="_blank" th:href="${post.getPerson().getPersonProfile().linkedIn}"><i class="fab fa-linkedin-in text-muted"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="sidebar-widget latest-post card border-0 p-4 mb-3">
+              <h5>Latest Posts</h5>
+
+              <div class="media border-bottom py-3" th:each="latPosts: ${latestPosts}">
+                <a th:href="@{/blog/view/{slug}(slug=${latPosts.slug})}"><img class="mr-4 latest-posts-image" th:src="${imagePath + latPosts.getPostImage().image}" alt=""></a>
+                <div class="media-body">
+                  <h6 class="my-2"><a th:href="@{/blog/view/{slug}(slug=${latPosts.slug})}" th:text="${latPosts.title}"></a></h6>
+                  <span class="text-sm text-muted" th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.DateFormatUtil).getPrettyDate(latPosts.createdAt)}"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-widget bg-white rounded tags p-4 mb-3">
+              <h5 class="mb-4">Tags</h5>
+
+              <a href="#" th:each="tag: ${postTags}" th:text="${tag}"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer start -->
+  <div th:replace="~{includes/footer :: footer}"></div>
+  <!-- footer end -->
+
+</div>
+
+<!-- footer-scripts start -->
+<div th:replace="~{includes/footer-scripts :: div}"></div>
+<!-- footer-scripts end -->
+
+<script>
+  function replyTo(username) {
+    document.getElementById("content").value = '@'+username+' ';
+  }
+</script>
+
+</body>
+</html>
