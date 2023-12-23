@@ -1,9 +1,14 @@
 package com.iykescode.blog.mikeybloggingwebapp.constants;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class UrlPathConstant {
+
+    @Value("${url.path}")
+    private static String path;
 
     /*
         Main URLS
      */
-    public static final String MainPath = "http://localhost:8080/";
+    public static final String MainPath = path;
 }
