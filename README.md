@@ -16,6 +16,7 @@ Mikey's Blogging Web Application is a feature-rich web platform designed for blo
   * [Technologies used](#technologies-used)
 * [How to Install and Run](#how-to-install-and-run)
 * [How to Use](#how-to-use)
+* [Launched App Link](#launched-app-link)
 * [Tests](#tests)
 * [Author](#author)
 
@@ -121,6 +122,10 @@ For Admin panel, hit `localhost:8080/user`
   * You can also run them as single in your IDE by simply opening the Test class and clicking `Run`.
 
 ---
+
+### Launched App Link
+
+* [mikey-blogging-webapp](https://mikey-blogging-webapp-production.up.railway.app)
 
 ### Author
 
