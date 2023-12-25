@@ -30,6 +30,7 @@ public class ProfileController {
     private final PersonService personService;
     private final PersonImageService personImageService;
     private final PersonProfileService personProfileService;
+    private final UrlPathConstant urlPathConstant;
 
     @GetMapping("/profile")
     public ModelAndView viewProfile(Model model,
@@ -40,7 +41,7 @@ public class ProfileController {
         PersonDTO person = personService.getLoggedInUser();
         PersonProfileDTO personProfile = person.getPersonProfile();
         ModelAndView modelAndView = new ModelAndView("user/user-profile");
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.userImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.userImages);
         modelAndView.addObject("person", person);
         modelAndView.addObject("profile", Objects.requireNonNullElseGet(personProfile, PersonProfileDTO::new));
 
@@ -104,7 +105,7 @@ public class ProfileController {
         PersonDTO loggedInUser = personService.getLoggedInUser();
         model.addAttribute("person", loggedInUser);
         model.addAttribute("image", loggedInUser.getPersonImage());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.userImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.userImages);
         model.addAttribute("type", "person");
         return "user/image-form";
     }

@@ -22,6 +22,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final PostService postService;
+    private final UrlPathConstant urlPathConstant;
 
     @PostMapping("/add-comment/{slug}")
     public String createComment(@PathVariable String slug,
@@ -32,7 +33,7 @@ public class CommentController {
         PostDTO post = postService.findByPostSlug(slug);
         model.addAttribute("title", UrlTitleConstant.BlogSingle);
         model.addAttribute("servletPath", request.getServletPath());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
         model.addAttribute("post", post);
 
         if(errors.hasErrors()) {

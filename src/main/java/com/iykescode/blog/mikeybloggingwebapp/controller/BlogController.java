@@ -32,6 +32,7 @@ public class BlogController {
     private final PersonService personService;
     private final PostViewService postViewService;
     private final CommentService commentService;
+    private final UrlPathConstant urlPathConstant;
 
     @GetMapping("/blog-with-sidebar")
     public ModelAndView BlogWithSideBar(Model model,
@@ -41,8 +42,8 @@ public class BlogController {
                                         @RequestParam(defaultValue = "title") String sortBy) {
         model.addAttribute("title", UrlTitleConstant.BlogWithSideBar);
         model.addAttribute("servletPath", request.getServletPath());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
-        model.addAttribute("personImagePath", UrlPathConstant.MainPath + ImageDIRConstant.userImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
+        model.addAttribute("personImagePath", urlPathConstant.MainPath() + ImageDIRConstant.userImages);
         Page<PostDTO> page = postService.getPaginatedAndSortedProducts(pageNo, pageSize, sortBy);
         return elementsForBlogWithSideBar(page, pageNo, pageSize, sortBy);
     }
@@ -56,8 +57,8 @@ public class BlogController {
                                                 @RequestParam(defaultValue = "title") String sortBy) {
         model.addAttribute("title", UrlTitleConstant.BlogWithSideBar);
         model.addAttribute("servletPath", request.getServletPath());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
-        model.addAttribute("personImagePath", UrlPathConstant.MainPath + ImageDIRConstant.userImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
+        model.addAttribute("personImagePath", urlPathConstant.MainPath() + ImageDIRConstant.userImages);
         Page<PostDTO> page = postService.getPaginatedAndSortedProductsBySearch(pageNo, pageSize, sortBy, keyword);
         return elementsForBlogWithSideBar(page, pageNo, pageSize, sortBy);
     }
@@ -105,8 +106,8 @@ public class BlogController {
 
         model.addAttribute("title", UrlTitleConstant.BlogSingle);
         model.addAttribute("servletPath", request.getServletPath());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
-        model.addAttribute("personImagePath", UrlPathConstant.MainPath + ImageDIRConstant.userImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
+        model.addAttribute("personImagePath", urlPathConstant.MainPath() + ImageDIRConstant.userImages);
         model.addAttribute("comment", new CommentDTO());
         ModelAndView modelAndView = new ModelAndView("blog/blog-single");
 

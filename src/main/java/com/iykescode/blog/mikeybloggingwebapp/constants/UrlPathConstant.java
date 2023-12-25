@@ -1,14 +1,19 @@
 package com.iykescode.blog.mikeybloggingwebapp.constants;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+@Component
+@AllArgsConstructor
 public class UrlPathConstant {
 
-    @Value("${url.path}")
-    private static String path;
+    private final Environment environment;
 
     /*
         Main URLS
      */
-    public static final String MainPath = path;
+    public String MainPath() {
+        return environment.getProperty("url.path");
+    }
 }

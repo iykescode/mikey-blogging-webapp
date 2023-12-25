@@ -35,6 +35,7 @@ public class PostController {
     private final CategoryService categoryService;
     private final PostImageService postImageService;
     private final PersonService personService;
+    private final UrlPathConstant urlPathConstant;
 
     @GetMapping("/posts")
     public ModelAndView viewAllPosts(Model model,
@@ -58,7 +59,7 @@ public class PostController {
         PersonDTO loggedInUser = personService.getLoggedInUser();
         postMainAttributes(model, request);
         messageParamAttributes(model, message);
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
         model.addAttribute("post", new PostDTO());
         ModelAndView modelAndView = new ModelAndView("user/pending-posts");
         modelAndView.addObject("posts", posts);
@@ -74,7 +75,7 @@ public class PostController {
         PersonDTO loggedInUser = personService.getLoggedInUser();
         postMainAttributes(model, request);
         messageParamAttributes(model, message);
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
         model.addAttribute("post", new PostDTO());
         ModelAndView modelAndView = new ModelAndView("user/draft-posts");
         modelAndView.addObject("posts", posts);
@@ -111,7 +112,7 @@ public class PostController {
         PostDTO byPostSlug = postService.findByPostSlug(slug);
         model.addAttribute("post", byPostSlug);
         model.addAttribute("image", byPostSlug.getPostImage());
-        model.addAttribute("imagePath", UrlPathConstant.MainPath + ImageDIRConstant.postImages);
+        model.addAttribute("imagePath", urlPathConstant.MainPath() + ImageDIRConstant.postImages);
         model.addAttribute("type", "post");
         return "user/image-form";
     }

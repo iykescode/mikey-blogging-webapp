@@ -1,5 +1,6 @@
 package com.iykescode.blog.mikeybloggingwebapp.controller;
 
+import com.iykescode.blog.mikeybloggingwebapp.constants.UrlPathConstant;
 import com.iykescode.blog.mikeybloggingwebapp.dto.PersonDTO;
 import com.iykescode.blog.mikeybloggingwebapp.dto.PersonImageDTO;
 import com.iykescode.blog.mikeybloggingwebapp.dto.PersonProfileDTO;
@@ -57,6 +58,9 @@ public class ProfileControllerTest {
 
     @MockBean
     private PersonProfileService personProfileService;
+
+    @MockBean
+    private UrlPathConstant urlPathConstant;
 
     private PersonDTO personDTO;
     private final PersonProfileDTO formPersonProfile = new PersonProfileDTO();

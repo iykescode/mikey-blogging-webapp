@@ -1,5 +1,6 @@
 package com.iykescode.blog.mikeybloggingwebapp.controller;
 
+import com.iykescode.blog.mikeybloggingwebapp.constants.UrlPathConstant;
 import com.iykescode.blog.mikeybloggingwebapp.dto.*;
 import com.iykescode.blog.mikeybloggingwebapp.model.*;
 import com.iykescode.blog.mikeybloggingwebapp.service.CommentService;
@@ -39,6 +40,9 @@ public class CommentControllerTest {
 
     @MockBean
     private CommentService commentService;
+
+    @MockBean
+    private UrlPathConstant urlPathConstant;
 
     private Comment comment;
     private PostDTO postDTO;

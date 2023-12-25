@@ -1,5 +1,6 @@
 package com.iykescode.blog.mikeybloggingwebapp.controller;
 
+import com.iykescode.blog.mikeybloggingwebapp.constants.UrlPathConstant;
 import com.iykescode.blog.mikeybloggingwebapp.dto.CategoryDTO;
 import com.iykescode.blog.mikeybloggingwebapp.dto.PostDTO;
 import com.iykescode.blog.mikeybloggingwebapp.dto.PostImageDTO;
@@ -65,6 +66,9 @@ public class PostControllerTest {
 
     @MockBean
     private PersonService personService;
+
+    @MockBean
+    private UrlPathConstant urlPathConstant;
 
     private PostDTO formPostDTO;
     private PostDTO postDTO;
