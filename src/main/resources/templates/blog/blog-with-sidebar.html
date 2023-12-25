@@ -45,11 +45,11 @@
 
                 <div class="blog-item-content bg-white p-4">
                   <div class="blog-item-meta  py-1 px-2">
-                    <span class="text-muted text-capitalize mr-3" th:if="${#strings.length(post.getCategory().name) > 30}"><i class="ti-pencil-alt mr-2"></i><span th:text="${#strings.substring(post.getCategory().name, 0, 30) + '...'}"></span></span>
-                    <span class="text-muted text-capitalize mr-3" th:if="${#strings.length(post.getCategory().name) < 30}"><i class="ti-pencil-alt mr-2"></i><span th:text="${post.getCategory().name}"></span></span>
+                    <span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i><span th:text="${post.getCategory().name}"></span></span>
                   </div>
 
-                  <h3 class="mt-3 mb-3"><a th:href="@{/blog/view/{slug}(slug=${post.slug})}" th:text="${post.title}"></a></h3>
+                  <h3 class="mt-3 mb-3" th:if="${#strings.length(post.title) > 30}"><a th:href="@{/blog/view/{slug}(slug=${post.slug})}" th:text="${#strings.substring(post.title, 0, 30 + '...')}"></a></h3>
+                  <h3 class="mt-3 mb-3" th:if="${#strings.length(post.title) < 30}"><a th:href="@{/blog/view/{slug}(slug=${post.slug})}" th:text="${post.title}"></a></h3>
 
 <!--                  TODO-->
                   <p class="mb-4 text-sm" th:if="${#strings.length(post.content) > 110}" th:utext="${#strings.substring(post.content, 0, 110) + '. read more...'}"></p>
