@@ -48,7 +48,6 @@
                             <div class="col-md-4">
                                 <!-- User Image -->
                                 <img th:each="img: ${person.getPersonImage()}" th:src="${imagePath + img.image}" alt="User Image" class="img-fluid user-profile-image">
-                                <p th:text="${imagePath}"></p>
                             </div>
                             <div class="col-md-8">
                                 <!-- User Name -->
