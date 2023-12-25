@@ -130,3 +130,4 @@ For Admin panel, hit `localhost:8080/user`
 ### Author
 
 * Twitter - [@michael_chukss](https://twitter.com/michael_chukss)
+* Theme by [Themefisher](https://themefisher.com)
