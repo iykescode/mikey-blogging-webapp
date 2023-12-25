@@ -12,7 +12,6 @@ import com.iykescode.blog.mikeybloggingwebapp.service.PostViewService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +25,6 @@ public class PostViewServiceImpl implements PostViewService {
     private final EntityManager entityManager;
 
     @Override
-    @Async
     @Transactional
     public void createPostView(PostDTO post, PersonDTO person) {
         if(!exists(person, post)) {

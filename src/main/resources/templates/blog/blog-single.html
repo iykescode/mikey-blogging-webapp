@@ -169,10 +169,10 @@
               <div class="card-body p-4 text-center">
                 <h5 class="mb-0 mt-4"
                     th:text="${T(com.iykescode.blog.mikeybloggingwebapp.util.StringUtil).spaceTwoStrings(post.getPerson().getFirstName(), post.getPerson().getLastName())}"></h5>
-                <p th:text="${post.getPerson().getPersonProfile().headline}"></p>
-                <p th:text="${post.getPerson().getPersonProfile().summary}"></p>
+                <p th:if="${post.getPerson().getPersonProfile() != null}" th:text="${post.getPerson().getPersonProfile().headline}"></p>
+                <p th:if="${post.getPerson().getPersonProfile() != null}" th:text="${post.getPerson().getPersonProfile().summary}"></p>
 
-                <ul class="list-inline author-socials">
+                <ul class="list-inline author-socials" th:if="${post.getPerson().getPersonProfile() != null}">
                   <li th:if="${post.getPerson().getPersonProfile().facebook != '' && post.getPerson().getPersonProfile().facebook != null}" class="list-inline-item mr-3">
                     <a target="_blank" th:href="${post.getPerson().getPersonProfile().facebook}"><i class="fab fa-facebook-f text-muted"></i></a>
                   </li>
