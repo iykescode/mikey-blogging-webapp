@@ -19,6 +19,7 @@ Mikey's Blogging Web Application is a feature-rich web platform designed for blo
 * [Launched App Link](#launched-app-link)
 * [Tests](#tests)
 * [Author](#author)
+* [Credits](#credits)
 
 ***
 
@@ -130,4 +131,6 @@ For Admin panel, hit `localhost:8080/user`
 ### Author
 
 * Twitter - [@michael_chukss](https://twitter.com/michael_chukss)
+
+### Credits
 * Theme by [Themefisher](https://themefisher.com)
